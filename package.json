@@ -1,0 +1,24 @@
+{
+  "name": "security-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "PORT=5000 node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/z3k9/security-example.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/z3k9/security-example/issues"
+  },
+  "homepage": "https://github.com/z3k9/security-example#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
