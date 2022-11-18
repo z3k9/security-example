@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/z3k9/security-example#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "helmet": "^6.0.0"
   }
 }
