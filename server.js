@@ -34,18 +34,21 @@ passport.use(new Strategy(AUTH_OPTIONS, verifyCallback));
 
 // Save the session to cookie
 passport.serializeUser((user, done)=>{
-    done(null, user);
+    done(null, user.id);
 });
 
-// Read the session from the cookie
-passport.deserializeUser((obj, done)=>{
-    done(null, obj);
+// Read the session from the cookie and places it in the request object(req.user)
+passport.deserializeUser((id, done)=>{
+    // User.findById(id).then(user =>{
+    //     done(null, user);
+    // })
+    done(null, id)
 })
 
 // helmet middleware to check headers
 app.use(helmet());
 
-//
+// cookie session specs
 app.use(cookieSession({
     name: 'session',
     maxAge: 24 * 60 * 60 * 1000,
@@ -55,11 +58,12 @@ app.use(cookieSession({
 // Sets up a passport session
 app.use(passport.initialize());
 // Authenticate the session being sent to server
+// passport.session middleware allows the deserializeUser() to be called
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 function checkLoggedIn(req, res, next){
-    const isLoggedIn = true;
+    const isLoggedIn = req.isAuthenticated() && req.user;
     if(!isLoggedIn){
         return res.status(401).json({
             error: 'You must be logged in'
@@ -85,7 +89,11 @@ app.get('/auth/google/callback',
     }
 );
 
-app.get('/auth/logout', (req,res)=>{});
+app.get('/auth/logout', (req,res)=>{
+    //Removes req.user and clears any logged in session
+    req.logout(); 
+    return res.redirect('/');
+});
 
 app.get('/secret',checkLoggedIn, (req,res)=>{
     return res.send('Your personal secret value is 42!');
